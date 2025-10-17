@@ -66,47 +66,6 @@ namespace EventManagement.DataAccessLayer.Migrations
                     b.HasIndex("OrganizerId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            Capacity = 500,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Annual technology conference featuring the latest innovations in AI and machine learning.",
-                            IsPublic = true,
-                            Location = "Convention Center, San Francisco",
-                            OrganizerId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            StartDateTime = new DateTime(2025, 4, 13, 11, 30, 0, 0, DateTimeKind.Utc),
-                            Title = "Tech Conference 2025",
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            Capacity = 30,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Connect with local professionals and expand your network.",
-                            IsPublic = true,
-                            Location = "Downtown Coffee Shop",
-                            OrganizerId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            StartDateTime = new DateTime(2025, 4, 12, 12, 0, 0, 0, DateTimeKind.Utc),
-                            Title = "Community Networking Meetup",
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            Capacity = 20,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Hands-on workshop covering modern UI/UX design principles.",
-                            IsPublic = true,
-                            Location = "Creative Space Studio",
-                            OrganizerId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            StartDateTime = new DateTime(2025, 4, 10, 16, 30, 0, 0, DateTimeKind.Utc),
-                            Title = "Design Workshop",
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                        });
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Participant", b =>
@@ -168,26 +127,6 @@ namespace EventManagement.DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "john@example.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PasswordHash = "$2a$12$nk.AN9wr5mw8JaXoxTEhyuR2IdG0Eix/biFO28GwM3vCvoeiAU9g2"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "jane@example.com",
-                            FirstName = "Jane",
-                            LastName = "Smith",
-                            PasswordHash = "$2a$12$xmEAUayoOwVtj6sI2B/WweeeZGkJp49dCP/EQq6VZf4GzuYYqatQu"
-                        });
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Event", b =>

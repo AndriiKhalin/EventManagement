@@ -1,4 +1,6 @@
 using EventManagement.DataAccessLayer;
+using EventManagement.Infrastructure.Configurations;
+using EventManagement.WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+await app.MigrateAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -24,4 +27,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
