@@ -1,7 +1,5 @@
-﻿namespace EventManagement.Domain
-{
-    public class Class1
-    {
+﻿namespace EventManagement.Domain;
 
-    }
+public class Class1
+{
 }

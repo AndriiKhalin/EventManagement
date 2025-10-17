@@ -1,6 +1,4 @@
 ﻿using EventManagement.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventManagement.DataAccessLayer.DataSeed;
 
@@ -11,11 +9,12 @@ public static class UsersSeed
 
     private static readonly string HashPasswordJohn = "$2a$12$nk.AN9wr5mw8JaXoxTEhyuR2IdG0Eix/biFO28GwM3vCvoeiAU9g2";
     private static readonly string HashPasswordJane = "$2a$12$xmEAUayoOwVtj6sI2B/WweeeZGkJp49dCP/EQq6VZf4GzuYYqatQu";
+
     public static List<User> GetSeedUsers()
     {
         return
         [
-            new()
+            new User
             {
                 Id = JohnDoeId,
                 Email = "john@example.com",
@@ -25,7 +24,7 @@ public static class UsersSeed
                 CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             },
 
-            new()
+            new User
             {
                 Id = JaneSmithId,
                 Email = "jane@example.com",

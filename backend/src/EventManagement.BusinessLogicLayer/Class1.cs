@@ -1,7 +1,5 @@
-﻿namespace EventManagement.BusinessLogicLayer
-{
-    public class Class1
-    {
+﻿namespace EventManagement.BusinessLogicLayer;
 
-    }
+public class Class1
+{
 }

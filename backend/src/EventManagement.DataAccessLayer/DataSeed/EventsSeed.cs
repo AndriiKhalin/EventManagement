@@ -1,6 +1,4 @@
 ﻿using EventManagement.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventManagement.DataAccessLayer.DataSeed;
 
@@ -14,7 +12,7 @@ public static class EventsSeed
     {
         return
         [
-            new()
+            new Event
             {
                 Id = TechConferenceId,
                 Title = "Tech Conference 2025",
@@ -29,7 +27,7 @@ public static class EventsSeed
                 OrganizerId = UsersSeed.JohnDoeId
             },
 
-            new()
+            new Event
             {
                 Id = NetworkingMeetupId,
                 Title = "Community Networking Meetup",
@@ -43,7 +41,7 @@ public static class EventsSeed
                 OrganizerId = UsersSeed.JaneSmithId
             },
 
-            new()
+            new Event
             {
                 Id = DesignWorkshopId,
                 Title = "Design Workshop",

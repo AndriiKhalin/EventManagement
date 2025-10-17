@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EventManagement.DataAccessLayer.Data;
+﻿using EventManagement.DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventManagement.DataAccessLayer.DataSeed;
@@ -14,10 +13,7 @@ public static class DatabaseSeeder
 
     private static async Task SeedUserDataAsync(ApplicationDbContext context)
     {
-        if (await context.Users.AnyAsync())
-        {
-            return;
-        }
+        if (await context.Users.AnyAsync()) return;
 
         var users = UsersSeed.GetSeedUsers();
         await context.Users.AddRangeAsync(users);
@@ -26,10 +22,7 @@ public static class DatabaseSeeder
 
     private static async Task SeedEventDataAsync(ApplicationDbContext context)
     {
-        if (await context.Events.AnyAsync())
-        {
-            return;
-        }
+        if (await context.Events.AnyAsync()) return;
 
         var events = EventsSeed.GetSeedEvents();
         await context.Events.AddRangeAsync(events);

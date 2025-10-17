@@ -23,6 +23,7 @@ public static class ApplyMigration
             logger.LogInformation("Seeding development data");
             await DatabaseSeeder.SeedDataAsync(db);
         }
+
         logger.LogInformation("Skipping data seeding - not in Development environment");
     }
 }
