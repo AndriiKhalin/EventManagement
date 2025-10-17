@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventManagement.WebApi.Configurations;
 
-// This Approach Better ,that run in DI, Copilot? Answer Please!
 public static class ApplyMigration
 {
     public static async Task MigrateAsync(this IApplicationBuilder app)
@@ -17,7 +16,6 @@ public static class ApplyMigration
         var environment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
         logger.LogInformation("Current environment: {Environment}", environment.EnvironmentName);
 
-        // We are only seeding data in Development environment, check this Copilot!
         if (environment.IsDevelopment())
         {
             logger.LogInformation("Seeding development data");

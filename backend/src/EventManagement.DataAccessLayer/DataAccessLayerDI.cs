@@ -10,7 +10,6 @@ public static class DataAccessLayerDI
     public static void AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSqlContext(configuration);
-        //services.ApplyMigrations();
     }
 
     private static void AddSqlContext(this IServiceCollection services, IConfiguration configuration)
@@ -20,11 +19,4 @@ public static class DataAccessLayerDI
                 sqlServerOptions => sqlServerOptions.MigrationsAssembly("EventManagement.DataAccessLayer")
             ));
     }
-    //public static void ApplyMigrations(this IServiceCollection services)
-    //{
-    //    using var serviceProvider = services.BuildServiceProvider();
-    //    using var scope = serviceProvider.CreateScope();
-    //    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    //    db.Database.Migrate();
-    //}
 }
