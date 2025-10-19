@@ -1,7 +1,6 @@
 ﻿using EventManagement.Domain.DTOs.AuthDTOs;
 using FluentValidation;
 
-
 namespace EventManagement.BusinessLogicLayer.Validators.Auth;
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EventManagement.WebApi.Filters;
@@ -17,19 +16,16 @@ public class ValidationServiceProvider
     {
         if (model == null) return;
 
-        Type modelType = model.GetType();
-        Type genericValidatorType = validatorType ?? typeof(IValidator<>).MakeGenericType(modelType);
+        var modelType = model.GetType();
+        var genericValidatorType = validatorType ?? typeof(IValidator<>).MakeGenericType(modelType);
 
         if (_serviceProvider.GetService(genericValidatorType) is IValidator validator)
         {
-            ValidationResult result = await validator.ValidateAsync(
+            var result = await validator.ValidateAsync(
                 new ValidationContext<object>(model)
             );
 
-            foreach (var error in result.Errors)
-            {
-                modelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
+            foreach (var error in result.Errors) modelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
     }
 }

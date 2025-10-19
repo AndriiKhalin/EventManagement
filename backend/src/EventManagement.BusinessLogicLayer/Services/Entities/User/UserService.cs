@@ -1,6 +1,5 @@
 ﻿using EventManagement.DataAccessLayer.Data;
 using EventManagement.Domain.Interfaces.Services.Entities.User;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventManagement.BusinessLogicLayer.Services.Entities.User;
 
@@ -12,6 +11,7 @@ public class UserService : IUserService
     {
         _context = context;
     }
+
     public async Task GetEventsAsync(Guid userId)
     {
         //var events = await _context.Events
@@ -26,6 +26,4 @@ public class UserService : IUserService
         //return events.Select(e => MapToEventDto(e, userId)).ToList();
         throw new NotImplementedException();
     }
-
-
 }

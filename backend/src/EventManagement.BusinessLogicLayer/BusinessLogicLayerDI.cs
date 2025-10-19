@@ -1,13 +1,13 @@
-﻿using EventManagement.BusinessLogicLayer.Services.Auth;
+﻿using System.Reflection;
+using EventManagement.BusinessLogicLayer.Services.Auth;
 using EventManagement.BusinessLogicLayer.Services.Entities.Event;
+using EventManagement.BusinessLogicLayer.Services.Entities.User;
 using EventManagement.Domain.Interfaces.Services.Auth;
 using EventManagement.Domain.Interfaces.Services.Entities.Event;
+using EventManagement.Domain.Interfaces.Services.Entities.User;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using EventManagement.BusinessLogicLayer.Services.Entities.User;
-using EventManagement.Domain.Interfaces.Services.Entities.User;
 
 namespace EventManagement.BusinessLogicLayer;
 

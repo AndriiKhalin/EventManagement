@@ -11,13 +11,11 @@ public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
 
-    //private readonly JwtSettings _jwtSettings;
     private readonly IJwtService _jwtService;
 
     public AuthService(ApplicationDbContext context, IJwtService jwtService)
     {
         _context = context;
-        //_jwtSettings = jwtSettings.Value;
         _jwtService = jwtService;
     }
 
@@ -62,31 +60,6 @@ public class AuthService : IAuthService
         var user = await _context.Users.FindAsync(userId);
         return user != null ? MapToUserDto(user) : null;
     }
-
-    //private string GenerateJwtToken(User user)
-    //{
-    //    var tokenHandler = new JwtSecurityTokenHandler();
-    //    var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
-
-    //    var tokenDescriptor = new SecurityTokenDescriptor
-    //    {
-    //        Subject = new ClaimsIdentity(new[]
-    //        {
-    //            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-    //            new Claim(ClaimTypes.Email, user.Email),
-    //            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
-    //        }),
-    //        Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes),
-    //        Issuer = _jwtSettings.Issuer,
-    //        Audience = _jwtSettings.Audience,
-    //        SigningCredentials = new SigningCredentials(
-    //            new SymmetricSecurityKey(key),
-    //            SecurityAlgorithms.HmacSha256Signature)
-    //    };
-
-    //    var token = tokenHandler.CreateToken(tokenDescriptor);
-    //    return tokenHandler.WriteToken(token);
-    //}
 
     private static UserDto MapToUserDto(User user)
     {

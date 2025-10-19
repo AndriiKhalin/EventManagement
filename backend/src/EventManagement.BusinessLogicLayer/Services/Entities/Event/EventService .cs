@@ -22,7 +22,7 @@ public class EventService : IEventService
         var events = await _context.Events
             .Include(e => e.Organizer)
             .Include(e => e.Participants)
-                .ThenInclude(p => p.User)
+            .ThenInclude(p => p.User)
             .Where(e => e.IsPublic && e.StartDateTime > DateTime.UtcNow)
             .OrderBy(e => e.StartDateTime)
             .ToListAsync();
@@ -35,7 +35,7 @@ public class EventService : IEventService
         var eventEntity = await _context.Events
             .Include(e => e.Organizer)
             .Include(e => e.Participants)
-                .ThenInclude(p => p.User)
+            .ThenInclude(p => p.User)
             .FirstOrDefaultAsync(e => e.Id == eventId);
 
         return eventEntity != null ? MapToEventDetailsDto(eventEntity, currentUserId) : null;
@@ -46,9 +46,9 @@ public class EventService : IEventService
         var events = await _context.Events
             .Include(e => e.Organizer)
             .Include(e => e.Participants)
-                .ThenInclude(p => p.User)
+            .ThenInclude(p => p.User)
             .Where(e => e.OrganizerId == userId ||
-                       e.Participants.Any(p => p.UserId == userId))
+                        e.Participants.Any(p => p.UserId == userId))
             .OrderBy(e => e.StartDateTime)
             .ToListAsync();
 
@@ -76,7 +76,7 @@ public class EventService : IEventService
         _context.Events.Add(eventEntity);
         await _context.SaveChangesAsync();
 
-        return (await GetEventByIdAsync(eventEntity.Id, organizerId));
+        return await GetEventByIdAsync(eventEntity.Id, organizerId);
     }
 
     public async Task<EventDetailsDto> UpdateEventAsync(Guid eventId, UpdateEventDto request, Guid userId)
@@ -165,7 +165,7 @@ public class EventService : IEventService
         var participantCount = eventEntity.Participants.Count;
         var isFull = eventEntity.Capacity.HasValue && participantCount >= eventEntity.Capacity.Value;
         var isUserParticipant = currentUserId.HasValue &&
-            eventEntity.Participants.Any(p => p.UserId == currentUserId.Value);
+                                eventEntity.Participants.Any(p => p.UserId == currentUserId.Value);
         var isUserOrganizer = currentUserId.HasValue && eventEntity.OrganizerId == currentUserId.Value;
 
         return new EventDetailsDto(
@@ -177,8 +177,10 @@ public class EventService : IEventService
             eventEntity.Capacity,
             eventEntity.IsPublic,
             isUserOrganizer,
-            new UserDto(eventEntity.Organizer.Id, eventEntity.Organizer.Email, eventEntity.Organizer.FirstName, eventEntity.Organizer.LastName),
-            eventEntity.Participants.Select(p => new ParticipantDto(p.User.Id, $"{p.User.FirstName} {p.User.LastName}", p.User.Email, p.JoinedAt)
+            new UserDto(eventEntity.Organizer.Id, eventEntity.Organizer.Email, eventEntity.Organizer.FirstName,
+                eventEntity.Organizer.LastName),
+            eventEntity.Participants.Select(p =>
+                new ParticipantDto(p.User.Id, $"{p.User.FirstName} {p.User.LastName}", p.User.Email, p.JoinedAt)
             ));
     }
 
@@ -190,6 +192,7 @@ public class EventService : IEventService
                                 eventEntity.Participants.Any(p => p.UserId == currentUserId.Value);
         var isUserOrganizer = currentUserId.HasValue && eventEntity.OrganizerId == currentUserId.Value;
 
-        return new EventDto(eventEntity.Id, eventEntity.Title, eventEntity.Description, eventEntity.StartDateTime, eventEntity.Location, eventEntity.Capacity, participantCount, isFull, isUserParticipant);
+        return new EventDto(eventEntity.Id, eventEntity.Title, eventEntity.Description, eventEntity.StartDateTime,
+            eventEntity.Location, eventEntity.Capacity, participantCount, isFull, isUserParticipant);
     }
 }

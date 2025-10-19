@@ -11,16 +11,13 @@ public class ValidationFilter : IAsyncActionFilter
     {
         _validationProvider = validationProvider;
     }
+
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         // Validate each parameter that has a validator
         foreach (var (key, value) in context.ActionArguments)
-        {
             if (value != null)
-            {
                 await _validationProvider.ValidateAsync(value, context.ModelState);
-            }
-        }
 
         if (!context.ModelState.IsValid)
         {

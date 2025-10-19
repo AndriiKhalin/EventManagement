@@ -1,6 +1,4 @@
-﻿using EventManagement.Domain.DTOs.EntitiesDTOs.User;
-
-namespace EventManagement.Domain.DTOs.EntitiesDTOs.Event;
+﻿namespace EventManagement.Domain.DTOs.EntitiesDTOs.Event;
 
 public record EventDto(
     Guid Id,
@@ -12,4 +10,4 @@ public record EventDto(
     int ParticipantCount,
     bool IsFull,
     bool IsUserParticipant
-    );
+);

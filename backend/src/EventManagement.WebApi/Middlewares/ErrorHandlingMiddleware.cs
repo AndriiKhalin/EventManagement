@@ -1,56 +1,50 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+﻿namespace EventManagement.WebApi.Middlewares;
 
-namespace EventManagement.WebApi.Middlewares
+// You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
+public class ErrorHandlingMiddleware
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
-    public class ErrorHandlingMiddleware
+    private readonly ILogger<ErrorHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
+
+    public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ErrorHandlingMiddleware> _logger;
+        _next = next;
+        _logger = logger;
+    }
 
-        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
+    public async Task Invoke(HttpContext httpContext)
+    {
+        try
         {
-            _next = next;
-            _logger = logger;
+            await _next(httpContext);
         }
-
-        public async Task Invoke(HttpContext httpContext)
+        catch (Exception ex)
         {
-
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unhandled exception occurred");
-                await HandleExceptionAsync(httpContext, ex);
-            }
-        }
-
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-
-            var response = new
-            {
-                message = "An error occurred while processing your request",
-                detail = exception.Message
-            };
-
-            await context.Response.WriteAsJsonAsync(response);
+            _logger.LogError(ex, "An unhandled exception occurred");
+            await HandleExceptionAsync(httpContext, ex);
         }
     }
 
-    // Extension method used to add the middleware to the HTTP request pipeline.
-    public static class ErrorHandlingMiddlewareExtensions
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        public static IApplicationBuilder UseErrorHandlingMiddleware(this IApplicationBuilder builder)
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var response = new
         {
-            return builder.UseMiddleware<ErrorHandlingMiddleware>();
-        }
+            message = "An error occurred while processing your request",
+            detail = exception.Message
+        };
+
+        await context.Response.WriteAsJsonAsync(response);
+    }
+}
+
+// Extension method used to add the middleware to the HTTP request pipeline.
+public static class ErrorHandlingMiddlewareExtensions
+{
+    public static IApplicationBuilder UseErrorHandlingMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<ErrorHandlingMiddleware>();
     }
 }

@@ -4,7 +4,6 @@ using EventManagement.Infrastructure;
 using EventManagement.WebApi;
 using EventManagement.WebApi.Configurations;
 using EventManagement.WebApi.Middlewares;
-using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,13 +27,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseErrorHandlingMiddleware();
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseErrorHandlingMiddleware();
 
 await app.RunAsync();

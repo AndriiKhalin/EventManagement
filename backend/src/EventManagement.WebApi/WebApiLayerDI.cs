@@ -1,12 +1,8 @@
-﻿using EventManagement.Domain.Settings;
-using EventManagement.WebApi.Filters;
+﻿using System.Text;
+using EventManagement.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 namespace EventManagement.WebApi;
 
@@ -16,12 +12,14 @@ public static class WebApiLayerDI
     {
         services.ConfigureJwt(configuration);
         services.AddSwaggerConfiguration();
-        //services.AddSingleton(configuration.GetSection("JwtSettings").Get<JwtSettings>());
     }
 
     private static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        if (jwtSettings == null)
+            throw new InvalidOperationException("JwtSettings configuration is missing");
+
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         services.AddSingleton(jwtSettings);
 
