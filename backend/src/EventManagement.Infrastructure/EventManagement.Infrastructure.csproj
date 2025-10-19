@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EventManagement.BusinessLogicLayer\EventManagement.BusinessLogicLayer.csproj" />
   </ItemGroup>
 
