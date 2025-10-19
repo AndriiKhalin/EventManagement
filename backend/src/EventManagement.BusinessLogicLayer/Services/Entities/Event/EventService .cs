@@ -177,8 +177,8 @@ public class EventService : IEventService
             eventEntity.Capacity,
             eventEntity.IsPublic,
             isUserOrganizer,
-            new UserDto(eventEntity.Organizer.Id, eventEntity.Organizer.Email, eventEntity.Organizer.FirstName,
-                eventEntity.Organizer.LastName),
+            new UserDto(eventEntity.Organizer.Id, eventEntity.Organizer.FirstName, eventEntity.Organizer.LastName,
+                eventEntity.Organizer.Email),
             eventEntity.Participants.Select(p =>
                 new ParticipantDto(p.User.Id, $"{p.User.FirstName} {p.User.LastName}", p.User.Email, p.JoinedAt)
             ));
