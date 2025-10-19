@@ -162,10 +162,6 @@ public class EventService : IEventService
 
     private static EventDetailsDto MapToEventDetailsDto(Domain.Entities.Event eventEntity, Guid? currentUserId)
     {
-        var participantCount = eventEntity.Participants.Count;
-        var isFull = eventEntity.Capacity.HasValue && participantCount >= eventEntity.Capacity.Value;
-        var isUserParticipant = currentUserId.HasValue &&
-                                eventEntity.Participants.Any(p => p.UserId == currentUserId.Value);
         var isUserOrganizer = currentUserId.HasValue && eventEntity.OrganizerId == currentUserId.Value;
 
         return new EventDetailsDto(
@@ -190,7 +186,6 @@ public class EventService : IEventService
         var isFull = eventEntity.Capacity.HasValue && participantCount >= eventEntity.Capacity.Value;
         var isUserParticipant = currentUserId.HasValue &&
                                 eventEntity.Participants.Any(p => p.UserId == currentUserId.Value);
-        var isUserOrganizer = currentUserId.HasValue && eventEntity.OrganizerId == currentUserId.Value;
 
         return new EventDto(eventEntity.Id, eventEntity.Title, eventEntity.Description, eventEntity.StartDateTime,
             eventEntity.Location, eventEntity.Capacity, participantCount, isFull, isUserParticipant);

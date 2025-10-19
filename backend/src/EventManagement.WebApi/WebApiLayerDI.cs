@@ -49,7 +49,7 @@ public static class WebApiLayerDI
         {
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = @"JWT Authorization Example : 'Bearer eyeleieieekeieieie'",
+                Description = @"JWT Authorization Example : 'Bearer {token}'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
