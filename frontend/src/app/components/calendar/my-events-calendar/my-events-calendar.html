@@ -1,0 +1,174 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+          <button routerLink="/events" class="text-gray-700 hover:text-primary">
+            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            Events
+          </button>
+          <button routerLink="/my-events" class="text-primary font-medium">
+            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            My Events
+          </button>
+        </div>
+        <button
+          (click)="navigateToCreateEvent()"
+          class="bg-primary text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          + Create Event
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-8 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">My Events</h1>
+        <p class="mt-2 text-gray-600">View and manage your event calendar</p>
+      </div>
+      <button
+        (click)="navigateToCreateEvent()"
+        class="bg-primary text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+      >
+        + Create Event
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <p class="text-gray-500">Loading calendar...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Calendar -->
+    <div *ngIf="!isLoading" class="bg-white rounded-lg shadow-md p-6">
+      <!-- Calendar Controls -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-4">
+          <button
+            (click)="previousPeriod()"
+            class="p-2 hover:bg-gray-100 rounded-md"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <h2 class="text-xl font-semibold text-gray-900">{{ currentMonthYear }}</h2>
+          <button
+            (click)="nextPeriod()"
+            class="p-2 hover:bg-gray-100 rounded-md"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="flex space-x-2">
+          <button
+            (click)="setViewMode('month')"
+            [class.bg-primary]="viewMode === 'month'"
+            [class.text-white]="viewMode === 'month'"
+            [class.bg-gray-200]="viewMode !== 'month'"
+            [class.text-gray-700]="viewMode !== 'month'"
+            class="px-4 py-2 rounded-md font-medium"
+          >
+            Month
+          </button>
+          <button
+            (click)="setViewMode('week')"
+            [class.bg-primary]="viewMode === 'week'"
+            [class.text-white]="viewMode === 'week'"
+            [class.bg-gray-200]="viewMode !== 'week'"
+            [class.text-gray-700]="viewMode !== 'week'"
+            class="px-4 py-2 rounded-md font-medium"
+          >
+            Week
+          </button>
+        </div>
+      </div>
+
+      <!-- Week Days Header -->
+      <div class="grid grid-cols-7 gap-2 mb-2">
+        <div *ngFor="let day of weekDays" class="text-center font-semibold text-gray-700 py-2">
+          {{ day }}
+        </div>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="grid grid-cols-7 gap-2">
+        <div
+          *ngFor="let day of calendarDays"
+          class="min-h-[120px] border border-gray-200 rounded-md p-2"
+          [class.bg-gray-50]="!day.isCurrentMonth"
+          [class.bg-blue-50]="isToday(day.date)"
+          [class.border-primary]="isToday(day.date)"
+        >
+          <!-- Day Number -->
+          <div class="flex justify-between items-start mb-2">
+            <span
+              class="text-sm font-medium"
+              [class.text-gray-400]="!day.isCurrentMonth"
+              [class.text-gray-900]="day.isCurrentMonth && !isToday(day.date)"
+              [class.text-primary]="isToday(day.date)"
+            >
+              {{ day.dayNumber }}
+            </span>
+            <span *ngIf="day.events.length > 0" class="text-xs bg-primary text-white px-2 py-0.5 rounded-full">
+              {{ day.events.length }}
+            </span>
+          </div>
+
+          <!-- Events -->
+          <div class="space-y-1">
+            <div
+              *ngFor="let event of day.events.slice(0, 3)"
+              (click)="navigateToEvent(event.id)"
+              class="text-xs p-1 bg-primary text-white rounded cursor-pointer hover:bg-indigo-700 truncate"
+              [title]="event.title"
+            >
+              {{ formatTime(event.startDateTime) }} - {{ event.title }}
+            </div>
+            <div
+              *ngIf="day.events.length > 3"
+              class="text-xs text-gray-500 text-center"
+            >
+              +{{ day.events.length - 3 }} more
+            </div>
+            <p *ngIf="day.events.length === 0 && day.isCurrentMonth" class="text-xs text-gray-400 text-center mt-4">
+              No events
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && events.length === 0" class="text-center py-12">
+      <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      <p class="text-gray-500 text-lg mb-4">You are not part of any events yet</p>
+      <p class="text-gray-400 mb-6">Explore public events and join them to see them here</p>
+      <button
+        routerLink="/events"
+        class="bg-primary text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+      >
+        Discover Events
+      </button>
+    </div>
+  </main>
+</div>
